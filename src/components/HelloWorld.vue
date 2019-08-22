@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>Test 1</h1>
+    <h1>Test 2: {{users}}</h1>
+    <!-- <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -26,15 +28,53 @@
       <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
 <script>
+import gql from 'graphql-tag'
+// import UserTable from './UserTable'
+// import { ALL_USERS_QUERY } from '../../constants/graphql'
+// import { ALL_PEOPLE_QUERY, NEW_PEOPLE_SUBSCRIPTION } from '../constants/graphql'
+
+export const ALL_USERS_QUERY = gql`
+  query AllUsersQuery {
+    users {
+      id
+      name
+      email
+    }
+  }
+`
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'HelloWorls',
+  // components: {
+  //   UserTable
+  // },
+  data () {
+    return {
+      users: ['test'],
+      // sortColumn: '',
+      // searchQuery: '',
+      // columns: [
+      //   {dbField: 'id', title: 'id'},
+      //   {dbField: 'name', title: 'name'},
+      //   {dbField: 'email', title: 'email'},
+      //   {dbField: 'createdAt', title: 'createdAt'},
+      //   {dbField: 'updatedAt', title: 'updatedAt'}]
+    }
+  },
+  // methods: {
+  //   processData (data) {
+  //     return data
+  //   }
+  // },
+  apollo: {
+    // allUser here pulls the data from ALL_USERS_QUERY and assigns it to the data(){} object at the top of script
+    users: {
+      query: ALL_USERS_QUERY
+    }
   }
 }
 </script>
