@@ -1,0 +1,6 @@
+endpoint: https://eu1.prisma.sh/jonathan-75b87e/construction_central/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: javascript-client
+    output: ./generated/prisma-client/
