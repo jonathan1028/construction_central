@@ -2,38 +2,38 @@
   <div class="signUpContainer">
     <div class="companyName">Construction Central</div>
     <div class="inputs">
-      <div class="field">
+      <!-- <div class="field">
         <label for="">Email</label>
         <input
           v-model="email"
           type="text"
           placeholder="Email">
-      </div>
+      </div> -->
       <div class="field">
         <label for="">First Name</label>
         <input
-          v-model="firstName"
+          v-model="name"
           type="text"
-          placeholder="Good">
+          placeholder="">
       </div>
-      <div class="field">
+      <!-- <div class="field">
         <label for="">Last Name</label>
         <input
           v-model="lastName"
           type="text"
           placeholder="Citizen">
-      </div>
-      <div class="field">
+      </div> -->
+      <!-- <div class="field">
         <label for="">Password</label>
         <input
           v-model="password"
           type="password"
           placeholder="Password">
-      </div>
+      </div> -->
     </div>
     <div>
       <button
-        @click="create"
+        @click="signUp"
         class="_button1"
       >
         Sign Up
@@ -47,38 +47,88 @@
         Already have an account? Login
       </router-link>
     </div>
+    <h1>Users: </h1>
+    <ul>
+      <li v-for="(user, index) in users">
+        {{ index }}: {{ user.name }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-export default {
-  name: 'Login',
-  data () {
-    return {
-      email: '',
-      firstName: '',
-      lastName: '',
-      password: ''
-    }
-  },
-  computed: {
-    ...mapGetters(['authenticated'])
-  },
-  methods: {
-    create () {
-      this.$store.dispatch('createUser',
-        {
-          email: this.email,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          password: this.password
+  import gql from 'graphql-tag'
+  // import { USER_ID, AUTH_TOKEN  } from '../constants'
+  const SIGN_UP_USER = gql `
+    mutation SIGN_UP_MUTATION($email: String!, $password: String!, $name: String!) {
+      signup(email: $email, password: $password, name: $name) {
+        token
+        user{
+          id
+          name
+          email
         }
-      )
+      }
+    }
+  `
+
+  const CREATE_USER_MUTATION = gql `
+    mutation CreateUserMutation($name: String!){
+      createUser(data: {name: $name}) {
+        id
+      }
+    }
+  `
+
+  const ALL_USERS_QUERY = gql`
+    query AllUsersQuery {
+      users {
+        id
+        name
+        email
+      }
+    }
+  `
+  export default {
+    data: () => ({
+      email: '',
+      password: '',
+      name: '',
+      users: []
+    }),
+    // Attribute
+    methods: {
+      signUp() {
+        const email = this.email
+        const password = this.password
+        const name = this.name
+        // Mutation
+        this.$apollo.mutate({
+          mutation: CREATE_USER_MUTATION,
+          variables: {
+            name
+          }
+        }).then((result) => {
+          // Result
+          console.log(result);
+          // const user = result.data.signup.user
+          // const token = result.data.signup.token
+          // this.saveUserData(user, token)
+          this.$router.push({ path: 'dashboard' })
+        }).catch((error) => {
+          // Error
+          alert(`Error from ${error}`)
+          console.error(error)
+        })
+      },
     },
-    ...mapActions(['logout'])
+    apollo: {
+    // allUser here pulls the data from ALL_USERS_QUERY and assigns it to the data(){} object at the top of script
+      users: {
+        query: ALL_USERS_QUERY
+      }
+    }
   }
-}
 </script>
 
 <style lang="scss" scoped>
