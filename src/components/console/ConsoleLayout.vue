@@ -4,7 +4,7 @@
       <div class="header-content">
           <div class="main-nav">
             <!-- Logo -->
-            <div class="logo">GCN</div>
+            <div class="logo">Construction Central</div>
             <div class="nav-buttons">
               <router-link to="/feed">Feed</router-link>
               <div>|</div>
@@ -26,9 +26,8 @@
             </div>
           </div>
           <!-- Login buttons   -->
-          <div>
+          <!-- <div>
             <div class="right-side-links">
-              <!-- <profile-selection></profile-selection> -->
               <div
                 v-if="authenticated"
                 class="link"
@@ -36,7 +35,7 @@
                   Log Out
               </div>
             </div>
-          </div>
+          </div> -->
       </div>
     </div>
     <div class="main-content">
@@ -49,27 +48,27 @@
 import { mapGetters, mapActions } from 'vuex'
 // import ProfileSelection from '../globalModules/ProfileSelection'
 export default {
-  name: 'AppHeader',
+  name: 'ConsoleLayout',
   components: {
     // ProfileSelection
   },
   data () {
-    console.log('Test', this.$store.state.auth.user.id)
+    // console.log('Test', this.$store.state.auth.user.id)
     return {
-      selected: 'userEmail'
+      // selected: 'userEmail'
       // selected: this.$store.state.auth.user.id
     }
   },
-  computed: mapGetters(['authenticated', 'userId', 'userEmail', 'user']),
-  methods: {
-    ...mapActions(['logout']),
-    selectProfile () {
-      console.log('Selected', this.selected)
-      if (this.selected !== this.userEmail) {
-        this.$router.push({ path: `/organization/profile/${this.selected}` })
-      }
-    }
-  }
+  // computed: mapGetters(['authenticated', 'userId', 'userEmail', 'user']),
+  // methods: {
+  //   ...mapActions(['logout']),
+  //   selectProfile () {
+  //     console.log('Selected', this.selected)
+  //     if (this.selected !== this.userEmail) {
+  //       this.$router.push({ path: `/organization/profile/${this.selected}` })
+  //     }
+  //   }
+  // }
 }
 </script>
 

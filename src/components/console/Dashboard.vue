@@ -31,16 +31,16 @@ export default {
     return {
       // showCreatePerson: this.$store.showCreatePerson,
       // showCreateMedallionModal: this.$store.showCreateMedallionModal
-      allOpportunities: [],
-      sortColumn: '',
-      searchQuery: '',
-      columns: [
-        {dbField: 'name', title: 'Name'},
-        {dbField: 'description', title: 'description'},
-        {dbField: 'startTime', title: 'Start Time'},
-        {dbField: 'endTime', title: 'End Time'},
-        {dbField: 'address', title: 'Location'}
-      ]
+      // allOpportunities: [],
+      // sortColumn: '',
+      // searchQuery: '',
+      // columns: [
+      //   {dbField: 'name', title: 'Name'},
+      //   {dbField: 'description', title: 'description'},
+      //   {dbField: 'startTime', title: 'Start Time'},
+      //   {dbField: 'endTime', title: 'End Time'},
+      //   {dbField: 'address', title: 'Location'}
+      // ]
     }
   },
   methods: {

@@ -143,16 +143,24 @@ export interface ClientConstructor<T> {
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "published_ASC"
+  | "published_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "published_ASC"
-  | "published_DESC";
+  | "content_ASC"
+  | "content_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "email_ASC"
   | "email_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "name_ASC"
   | "name_DESC";
 
@@ -177,6 +185,24 @@ export interface PostWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -191,8 +217,20 @@ export interface PostWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  published?: Maybe<Boolean>;
-  published_not?: Maybe<Boolean>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
   author?: Maybe<UserWhereInput>;
   AND?: Maybe<PostWhereInput[] | PostWhereInput>;
   OR?: Maybe<PostWhereInput[] | PostWhereInput>;
@@ -228,6 +266,20 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -257,9 +309,10 @@ export type UserWhereUniqueInput = AtLeastOne<{
 
 export interface PostCreateInput {
   id?: Maybe<ID_Input>;
-  title: String;
   published?: Maybe<Boolean>;
-  author?: Maybe<UserCreateOneWithoutPostsInput>;
+  title: String;
+  content?: Maybe<String>;
+  author: UserCreateOneWithoutPostsInput;
 }
 
 export interface UserCreateOneWithoutPostsInput {
@@ -270,26 +323,27 @@ export interface UserCreateOneWithoutPostsInput {
 export interface UserCreateWithoutPostsInput {
   id?: Maybe<ID_Input>;
   email?: Maybe<String>;
-  name: String;
+  password?: Maybe<String>;
+  name?: Maybe<String>;
 }
 
 export interface PostUpdateInput {
-  title?: Maybe<String>;
   published?: Maybe<Boolean>;
-  author?: Maybe<UserUpdateOneWithoutPostsInput>;
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  author?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
 }
 
-export interface UserUpdateOneWithoutPostsInput {
+export interface UserUpdateOneRequiredWithoutPostsInput {
   create?: Maybe<UserCreateWithoutPostsInput>;
   update?: Maybe<UserUpdateWithoutPostsDataInput>;
   upsert?: Maybe<UserUpsertWithoutPostsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface UserUpdateWithoutPostsDataInput {
   email?: Maybe<String>;
+  password?: Maybe<String>;
   name?: Maybe<String>;
 }
 
@@ -299,14 +353,16 @@ export interface UserUpsertWithoutPostsInput {
 }
 
 export interface PostUpdateManyMutationInput {
-  title?: Maybe<String>;
   published?: Maybe<Boolean>;
+  title?: Maybe<String>;
+  content?: Maybe<String>;
 }
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   email?: Maybe<String>;
-  name: String;
+  password?: Maybe<String>;
+  name?: Maybe<String>;
   posts?: Maybe<PostCreateManyWithoutAuthorInput>;
 }
 
@@ -317,12 +373,14 @@ export interface PostCreateManyWithoutAuthorInput {
 
 export interface PostCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
-  title: String;
   published?: Maybe<Boolean>;
+  title: String;
+  content?: Maybe<String>;
 }
 
 export interface UserUpdateInput {
   email?: Maybe<String>;
+  password?: Maybe<String>;
   name?: Maybe<String>;
   posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
 }
@@ -353,8 +411,9 @@ export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
 }
 
 export interface PostUpdateWithoutAuthorDataInput {
-  title?: Maybe<String>;
   published?: Maybe<Boolean>;
+  title?: Maybe<String>;
+  content?: Maybe<String>;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -378,6 +437,24 @@ export interface PostScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -392,8 +469,20 @@ export interface PostScalarWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  published?: Maybe<Boolean>;
-  published_not?: Maybe<Boolean>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
   AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
@@ -405,12 +494,14 @@ export interface PostUpdateManyWithWhereNestedInput {
 }
 
 export interface PostUpdateManyDataInput {
-  title?: Maybe<String>;
   published?: Maybe<Boolean>;
+  title?: Maybe<String>;
+  content?: Maybe<String>;
 }
 
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
+  password?: Maybe<String>;
   name?: Maybe<String>;
 }
 
@@ -442,14 +533,20 @@ export interface NodeNode {
 
 export interface Post {
   id: ID_Output;
-  title: String;
+  createdAt?: DateTimeOutput;
+  updatedAt?: DateTimeOutput;
   published: Boolean;
+  title: String;
+  content?: String;
 }
 
 export interface PostPromise extends Promise<Post>, Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   published: () => Promise<Boolean>;
+  title: () => Promise<String>;
+  content: () => Promise<String>;
   author: <T = UserPromise>() => T;
 }
 
@@ -457,8 +554,11 @@ export interface PostSubscription
   extends Promise<AsyncIterator<Post>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   published: () => Promise<AsyncIterator<Boolean>>;
+  title: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
   author: <T = UserSubscription>() => T;
 }
 
@@ -466,20 +566,25 @@ export interface PostNullablePromise
   extends Promise<Post | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   published: () => Promise<Boolean>;
+  title: () => Promise<String>;
+  content: () => Promise<String>;
   author: <T = UserPromise>() => T;
 }
 
 export interface User {
   id: ID_Output;
   email?: String;
-  name: String;
+  password?: String;
+  name?: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
+  password: () => Promise<String>;
   name: () => Promise<String>;
   posts: <T = FragmentableArray<Post>>(args?: {
     where?: PostWhereInput;
@@ -497,6 +602,7 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
     where?: PostWhereInput;
@@ -514,6 +620,7 @@ export interface UserNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
+  password: () => Promise<String>;
   name: () => Promise<String>;
   posts: <T = FragmentableArray<Post>>(args?: {
     where?: PostWhereInput;
@@ -700,24 +807,33 @@ export interface PostSubscriptionPayloadSubscription
 
 export interface PostPreviousValues {
   id: ID_Output;
-  title: String;
+  createdAt?: DateTimeOutput;
+  updatedAt?: DateTimeOutput;
   published: Boolean;
+  title: String;
+  content?: String;
 }
 
 export interface PostPreviousValuesPromise
   extends Promise<PostPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   published: () => Promise<Boolean>;
+  title: () => Promise<String>;
+  content: () => Promise<String>;
 }
 
 export interface PostPreviousValuesSubscription
   extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   published: () => Promise<AsyncIterator<Boolean>>;
+  title: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -748,7 +864,8 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   email?: String;
-  name: String;
+  password?: String;
+  name?: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -756,6 +873,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
+  password: () => Promise<String>;
   name: () => Promise<String>;
 }
 
@@ -764,6 +882,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
@@ -774,14 +893,24 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+DateTime scalar input type, allowing Date
 */
-export type String = string;
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.

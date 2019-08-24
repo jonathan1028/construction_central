@@ -1,15 +1,31 @@
+const { getUserId } = require('../utils')
+
 exports.Query = {
-    publishedPosts(root, args, context) {
-      return context.prisma.posts({ where: { published: true } })
-    },
-    post(root, args, context) {
-      return context.prisma.post({ id: args.postId })
-    },
-    postsByUser(root, args, context) {
-      return context.prisma
-        .user({
-          id: args.userId,
-        })
-        .posts()
-    },
+  users: (parent, args, context) => {
+    return context.prisma.users()
+  },
+  me: (parent, args, context) => {
+    const userId = getUserId(context)
+    return context.prisma.user({ id: userId })
+  },
+  feed: (parent, args, context) => {
+    return context.prisma.posts({ where: { published: true } })
+  },
+  filterPosts: (parent, { searchString }, context) => {
+    return context.prisma.posts({
+      where: {
+        OR: [
+          {
+            title_contains: searchString,
+          },
+          {
+            content_contains: searchString,
+          },
+        ],
+      },
+    })
+  },
+  post: (parent, { id }, context) => {
+    return context.prisma.post({ id })
+  },
 };

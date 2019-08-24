@@ -2,19 +2,19 @@
   <div class="signUpContainer">
     <div class="companyName">Construction Central</div>
     <div class="inputs">
-      <!-- <div class="field">
-        <label for="">Email</label>
-        <input
-          v-model="email"
-          type="text"
-          placeholder="Email">
-      </div> -->
       <div class="field">
         <label for="">First Name</label>
         <input
           v-model="name"
           type="text"
           placeholder="">
+      </div>
+      <div class="field">
+        <label for="">Email</label>
+        <input
+          v-model="email"
+          type="text"
+          placeholder="Email">
       </div>
       <!-- <div class="field">
         <label for="">Last Name</label>
@@ -23,13 +23,13 @@
           type="text"
           placeholder="Citizen">
       </div> -->
-      <!-- <div class="field">
+      <div class="field">
         <label for="">Password</label>
         <input
           v-model="password"
           type="password"
           placeholder="Password">
-      </div> -->
+      </div>
     </div>
     <div>
       <button
@@ -39,19 +39,23 @@
         Sign Up
       </button>
     </div>
-    <div class="linkBlock">
+    <!-- <div class="linkBlock">
       <router-link
         class="link"
         to="login"
       >
         Already have an account? Login
       </router-link>
-    </div>
+    </div> -->
     <h1>Users: </h1>
     <ul>
-      <li v-for="(user, index) in users">
-        {{ index }}: {{ user.name }}
-      </li>
+      <li>{{users.length}} - {{users[users.length-1].name}}, {{users[users.length-1].email}}, {{users[users.length-1].password}}</li>
+      <li>{{users.length-1}} - {{users[users.length-2].name}}, {{users[users.length-2].email}}, {{users[users.length-2].password}}</li>
+      <li>{{users.length-2}} - {{users[users.length-3].name}}, {{users[users.length-3].email}}, {{users[users.length-3].password}}</li>
+    </ul>
+    <h1>Posts: </h1>
+    <ul>
+      <li>{{feed}}</li>
     </ul>
   </div>
 </template>
@@ -59,8 +63,8 @@
 <script>
   import gql from 'graphql-tag'
   // import { USER_ID, AUTH_TOKEN  } from '../constants'
-  const SIGN_UP_USER = gql `
-    mutation SIGN_UP_MUTATION($email: String!, $password: String!, $name: String!) {
+  const SIGNUP_USER_MUTATION = gql `
+    mutation SignupUserMutation($email: String!, $password: String!, $name: String!) {
       signup(email: $email, password: $password, name: $name) {
         token
         user{
@@ -68,14 +72,6 @@
           name
           email
         }
-      }
-    }
-  `
-
-  const CREATE_USER_MUTATION = gql `
-    mutation CreateUserMutation($name: String!){
-      createUser(data: {name: $name}) {
-        id
       }
     }
   `
@@ -89,12 +85,28 @@
       }
     }
   `
+
+  const ALL_POSTS_QUERY = gql`
+    query AllPostsQuery {
+      feed {
+        id
+        title
+        content
+        author {
+          id
+          name
+        }
+      }
+    }
+  `
+
   export default {
     data: () => ({
       email: '',
       password: '',
       name: '',
-      users: []
+      users: [],
+      feed: []
     }),
     // Attribute
     methods: {
@@ -104,20 +116,22 @@
         const name = this.name
         // Mutation
         this.$apollo.mutate({
-          mutation: CREATE_USER_MUTATION,
+          mutation: SIGNUP_USER_MUTATION,
           variables: {
-            name
+            name,
+            email,
+            password
           }
         }).then((result) => {
           // Result
           console.log(result);
-          // const user = result.data.signup.user
-          // const token = result.data.signup.token
+          const user = result.data.signup.user
+          const token = result.data.signup.token
           // this.saveUserData(user, token)
           this.$router.push({ path: 'dashboard' })
         }).catch((error) => {
           // Error
-          alert(`Error from ${error}`)
+          alert(`Signup failed.`)
           console.error(error)
         })
       },
@@ -126,6 +140,9 @@
     // allUser here pulls the data from ALL_USERS_QUERY and assigns it to the data(){} object at the top of script
       users: {
         query: ALL_USERS_QUERY
+      },
+      feed: {
+        query: ALL_POSTS_QUERY
       }
     }
   }

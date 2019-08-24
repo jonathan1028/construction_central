@@ -1,22 +1,20 @@
+scalar DateTime
+
 type Query {
-  publishedPosts: [Post!]!
-  post(postId: ID!): Post
-  postsByUser(userId: ID!): [Post!]!
+  users: [User!]!
+  me: User
+  feed: [Post!]!
+  filterPosts(searchString: String): [Post!]!
+  post(id: ID!): Post
 }
 
 type Mutation {
-  createUser(name: String!): User
-  createDraft(title: String!, userId: ID!): Post
-  publish(postId: ID!): Post
+  createUser(email: String!, password: String!, name: String): AuthPayload!
+  createDraft(title: String!, content: String): Post!
+  deletePost(id: ID!): Post
+  publish(id: ID!): Post
   signup(email: String!, password: String!, name: String): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
-}
-
-type User {
-  id: ID!
-  email: String
-  name: String!
-  posts: [Post!]!
 }
 
 type AuthPayload {
@@ -26,7 +24,18 @@ type AuthPayload {
 
 type Post {
   id: ID!
-  title: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   published: Boolean!
-  author: User
+  title: String!
+  content: String
+  author: User!
+}
+
+# Fields listed here are allowed to be queried by client (password is not listed because we do not want the client to be able to acces that) 
+type User {
+  id: ID!
+  email: String
+  name: String
+  posts: [Post!]!
 }

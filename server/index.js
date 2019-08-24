@@ -1,13 +1,13 @@
 const { prisma } = require('./generated/prisma-client')
 const { GraphQLServer } = require('graphql-yoga')
 const { resolvers } = require('./resolvers')
-// const { permissions } = require('./permissions')
+const { permissions } = require('./permissions')
 
 
 const server = new GraphQLServer({
     typeDefs: './schema.graphql',
     resolvers,
-    // middlewares: [permissions],
+    middlewares: [permissions],
     context: {
       prisma,
     },

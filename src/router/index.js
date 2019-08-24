@@ -89,10 +89,11 @@ const router = new Router({
       children: [
         {
           path: '/dashboard',
+          name: 'Dashboard',
           component: DashboardPage,
-          meta: {
-            requiresAuth: true
-          }
+          // meta: {
+          //   requiresAuth: true
+          // }
         }
       ]
     },
