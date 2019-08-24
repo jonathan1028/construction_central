@@ -13,29 +13,18 @@
               <router-link to="/profile">Profile</router-link>
               <div>|</div>
               <router-link to="/admin/dashboard">Admin</router-link>
-              <!-- Logged in navigation -->
-              <!-- <div class="authenticated-nav" v-if="userId">
-                <router-link to="/people">People</router-link>
-                <div>|</div>
-                <router-link to="/opportunities">Opportunities</router-link>
-                <div>|</div>
-              </div>
-              <router-link to="/admin">Admin Panel</router-link>
-              <div>|</div>
-              <router-link to="/newusers">New User Accounts</router-link> -->
             </div>
           </div>
           <!-- Login buttons   -->
-          <!-- <div>
+          <div>
             <div class="right-side-links">
               <div
-                v-if="authenticated"
                 class="link"
                 @click="logout()">
                   Log Out
               </div>
             </div>
-          </div> -->
+          </div>
       </div>
     </div>
     <div class="main-content">
@@ -45,30 +34,19 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-// import ProfileSelection from '../globalModules/ProfileSelection'
 export default {
   name: 'ConsoleLayout',
-  components: {
-    // ProfileSelection
-  },
   data () {
-    // console.log('Test', this.$store.state.auth.user.id)
     return {
-      // selected: 'userEmail'
-      // selected: this.$store.state.auth.user.id
     }
   },
-  // computed: mapGetters(['authenticated', 'userId', 'userEmail', 'user']),
-  // methods: {
-  //   ...mapActions(['logout']),
-  //   selectProfile () {
-  //     console.log('Selected', this.selected)
-  //     if (this.selected !== this.userEmail) {
-  //       this.$router.push({ path: `/organization/profile/${this.selected}` })
-  //     }
-  //   }
-  // }
+  methods: {
+    logout() {
+      localStorage.USER_ID = ''
+      localStorage.token = ''
+      this.$router.push({ path: 'login' })
+    }
+  }
 }
 </script>
 

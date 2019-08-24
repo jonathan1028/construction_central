@@ -91,9 +91,9 @@ const router = new Router({
           path: '/dashboard',
           name: 'Dashboard',
           component: DashboardPage,
-          // meta: {
-          //   requiresAuth: true
-          // }
+          meta: {
+            requiresAuth: true
+          }
         }
       ]
     },
@@ -104,12 +104,12 @@ const router = new Router({
 
 // Need to add funcationality to default to a protected route if requiresAuth has not been set on a route
 router.beforeEach((to, from, next) => {
-  if (store.getters.authenticated) {
+  if (localStorage.USER_ID) {
     console.log('User is Authenticated from router')
   }
 
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  if (requiresAuth && !store.getters.authenticated) {
+  if (requiresAuth && !localStorage.USER_ID) {
     next('login')
   } else {
     next()

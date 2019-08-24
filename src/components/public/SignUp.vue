@@ -125,8 +125,8 @@
         }).then((result) => {
           // Result
           console.log(result);
-          const user = result.data.signup.user
-          const token = result.data.signup.token
+          localStorage.USER_ID = result.data.signup.user.id
+          localStorage.token = result.data.signup.token
           // this.saveUserData(user, token)
           this.$router.push({ path: 'dashboard' })
         }).catch((error) => {

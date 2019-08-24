@@ -3,14 +3,14 @@
     <div class="companyName">Construction Central</div>
     <div class="inputs">
       <div class="field">
-        <label for="">Username</label>
+        <label for="">Email</label>
         <input
           v-model="email"
           type="text"
           placeholder="Your email address or mobile number">
       </div>
       <div class="field">
-        <label for="">Email</label>
+        <label for="">Password</label>
         <input
           v-model="password"
           type="password"
@@ -44,66 +44,76 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-export default {
-  name: 'Login',
-  data () {
-    return {
+  import gql from 'graphql-tag'
+  // import { USER_ID, AUTH_TOKEN  } from '../../constants'
+  const LOGIN_USER = gql `
+    mutation LoginMutation($email: String!, $password: String!) {
+      login(email: $email, password: $password) {
+        token
+        user{
+          id
+          name
+          email
+        }
+      }
+    }
+  `
+  export default {
+    data: () => ({
       email: '',
       password: ''
-    }
-  },
-  computed: {
-    ...mapGetters(['authenticated'])
-  },
-  methods: {
-    login () {
-      this.$store.dispatch('login', {email: this.email, password: this.password})
+    }),
+    // Attribute
+    methods: {
+      login() {
+        const email = this.email
+        const password = this.password
+        // Mutation
+        this.$apollo.mutate({
+          mutation: LOGIN_USER,
+          variables: {
+            email,
+            password,
+          },
+        }).then((result) => {
+          // Result
+          console.log(result);
+          const user = result.data.login.user
+          const token = result.data.login.token
+          this.saveUserData(user, token)
+          this.$router.push({ path: '/dashboard' })
+        }).catch((error) => {
+          // Error
+          alert(`Error logging in.`)
+          console.error(error)
+        })
+      },
+      saveUserData (user, token) {
+        console.log("User", user)
+        console.log("UserID",user.id)
+        localStorage.USER_ID = user.id
+        localStorage.AUTH_TOKEN = token
+        // localStorage.TEST1 = "test2"
+        // test = localStorage.USER_ID
+        // console.log("Token", localStorage.TEST1)
+        // this.$root.$data.token = localStorage.USER_ID
+        // console.log("Test saved USER_ID", this.$root.$data.token)
+        console.log("Test3", localStorage.USER_ID)
+      }
     },
-    ...mapActions(['logout'])
+    computed: {
+      canLogin: function () {
+        return {
+          disabled: !this.email && !this.password
+        }
+      },
+      classObject: function(){
+        return {
+          dim: this.email && this.password
+        }
+      }
+    }
   }
-  // methods: {
-  //   handleAuthenticate () {
-  //     const { name, email, password } = this.$data
-  //     if (this.login) {
-  //       this.$apollo.mutate({
-  //         mutation: SIGNIN_USER_MUTATION,
-  //         variables: {
-  //           email,
-  //           password
-  //         }
-  //       }).then((result) => {
-  //         const id = result.data.signinUser.user.id
-  //         const token = result.data.signinUser.token
-  //         this.saveUserData(id, token)
-  //       }).catch((error) => {
-  //         alert(error)
-  //       })
-  //     } else {
-  //       this.$apollo.mutate({
-  //         mutation: CREATE_USER_MUTATION,
-  //         variables: {
-  //           name,
-  //           email,
-  //           password
-  //         }
-  //       }).then((result) => {
-  //         const id = result.data.signinUser.user.id
-  //         const token = result.data.signinUser.token
-  //         this.saveUserData(id, token)
-  //       }).catch((error) => {
-  //         alert(error)
-  //       })
-  //     }
-  //     this.$router.push({path: '/'})
-  //   },
-  //   saveUserData (id, token) {
-  //     localStorage.setItem(GC_USER_ID, id)
-  //     localStorage.setItem(GC_AUTH_TOKEN, token)
-  //     this.$root.$data.userId = localStorage.getItem(GC_USER_ID)
-  //   }
-  // }
-}
 </script>
 
 <style lang="scss" scoped>
