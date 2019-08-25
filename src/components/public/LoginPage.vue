@@ -53,7 +53,8 @@
         token
         user{
           id
-          name
+          firstName
+          lastName
           email
         }
       }
