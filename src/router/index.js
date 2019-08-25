@@ -4,10 +4,14 @@ import Router from 'vue-router'
 // Public Pages
 import PublicLayout from '../components/public/PublicLayout'
 import Home from '@/components/public/Home'
-import Login from '../components/public/Login'
-import SignUp from '../components/public/SignUp'
+
+// Login Pages
+import LoginLayout from '../components/public/LoginLayout'
+import LoginPage from '../components/public/LoginPage'
+import SignupPage from '../components/public/SignupPage'
+
 // import OrganizationSignUpPage from '../components/public/OrganizationSignUpPage'
-import store from '../store/index'
+// import store from '../store/index'
 
 // Organization Console
 // import OrganizationConsoleLayout from '../components/organizationConsole/OrganizationConsoleLayout'
@@ -63,19 +67,26 @@ const router = new Router({
           meta: {
             requiresAuth: false
           }
-        },
+        }
+      ]
+    },
+    // ======================================= Login/Signup Pages =============================================
+    {
+      path: '/',
+      component: LoginLayout,
+      children: [
         {
           path: '/login',
           name: 'Login',
-          component: Login,
+          component: LoginPage,
           meta: {
             requiresAuth: false
           }
         },
         {
           path: '/signup',
-          name: 'SignUp',
-          component: SignUp,
+          name: 'Signup',
+          component: SignupPage,
           meta: {
             requiresAuth: false
           }

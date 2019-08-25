@@ -1,31 +1,18 @@
 <template>
-  <div class="header">
-    <div class="header-content">
-        <div class="main-nav">
-          <!-- Logo -->
-          <div class="logo">Construction Central</div>
-          <!-- Main navigation -->
-          <div class="nav-buttons">
-            <!-- <router-link to="/admin">About</router-link>
-            <div>|</div>
-            <router-link to="/newusers">Contact</router-link> -->
-          </div>
-        </div>
-        <!-- Login buttons   -->
+  <div class="layout">
+    <div class="header">
+      <div class="logo">Construction Central</div>
+      <div class="navigation">
+          <!-- <router-link to="/admin">About</router-link>
+          <div>|</div>
+          <router-link to="/newusers">Contact</router-link> -->
+      </div>
+      <div class="login">
         <router-link to="/login">Login</router-link>
-        <!-- <button
-          v-if="!authenticated"
-          @click="login()">
-            Log In
-        </button> -->
-
-        <!-- <button
-          v-if="authenticated"
-          @click="logout()">
-            Log Out
-        </button> -->
+      </div>
     </div>
-    <router-view></router-view>
+    <router-view class="content gradient"></router-view>
+    <div class="footer"></div>
   </div>
 </template>
 
@@ -39,67 +26,52 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.layout{
+  display: grid;
+  grid-template-rows: 7vh 86vh 7vh;
+  grid-template-areas: 
+  "header"
+  "content"
+  "footer";
+}
 .header{
-  position: fixed;
-  width: 100%;
-  height: 40px;
-  background-color: white;
-  top: 0;
-  -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-  -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  grid-area: header;
+  display: grid;
+  grid-template-columns: 40% 10% 50%;
+  grid-template-areas:
+  "logo navigation login";
+  padding: 1vh 1vw;
+  .logo{
+    grid-area: logo;
+    font-size: 3vmax;
+    align-self: center;
+  }
+  .navigation{
+    grid-area: navigation;
+    align-self: center;
+  }
+  .login{
+    grid-area: login;
+    justify-self: end;
+    align-self: center;
+  }
 }
-.header-content{
-  max-width: 90%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.content{
+  // padding: 1vh 5vw;
 }
-.logo{
-  margin-right: 1em;
+.footer {
+  grid-area: footer;
+  background-color: var(--color3);
 }
-.main-nav{
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.nav-buttons{
-  display: flex;
-  justify-content:space-between;
-  align-items: center;
-  color: #3273dc;
-  cursor: pointer;
-  text-decoration: none;
-}
-.nav-buttons a{
-  color: #3273dc;
-  text-decoration: none;
-}
-.nav-buttons a:visited{
-  color: #3273dc;
-  text-decoration: none;
-}
-.nav-buttons a:hover{
-  color: gray;
-  text-decoration: none;
-}
-.authenticated-nav{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.login a{
-   color: #3273dc;
-   text-decoration: none;
-}
-.login a:visited{
-  color: #3273dc;
-  text-decoration: none;
-}
-.login a:hover{
-  color: gray;
+.gradient {
+  color: white;
+  background: -moz-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* ff3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(45,48,245,1)), color-stop(100%, rgba(35,150,153,1))); /* safari4+,chrome */
+  background: -webkit-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* safari5.1+,chrome10+ */
+  background: -o-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* opera 11.10+ */
+  background: -ms-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* ie10+ */
+  background: linear-gradient(125deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2D30F5', endColorstr='#239699',GradientType=1 ); /* ie6-9 */
 }
 </style>
