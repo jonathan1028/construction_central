@@ -9,11 +9,11 @@ type Query {
 }
 
 type Mutation {
-  createUser(email: String!, password: String!, name: String): AuthPayload!
+  createUser(email: String!, password: String!, firstName: String): AuthPayload!
   createDraft(title: String!, content: String): Post!
   deletePost(id: ID!): Post
   publish(id: ID!): Post
-  signup(email: String!, password: String!, name: String): AuthPayload!
+  signup(email: String!, password: String!, firstName: String!, lastName: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
 }
 
@@ -35,7 +35,8 @@ type Post {
 # Fields listed here are allowed to be queried by client (password is not listed because we do not want the client to be able to acces that) 
 type User {
   id: ID!
+  firstName: String
+  lastName: String
   email: String
-  name: String
   posts: [Post!]!
 }

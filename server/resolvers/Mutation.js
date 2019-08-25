@@ -16,10 +16,11 @@ exports.Mutation = {
       user,
     }
   },
-  signup: async (parent, { name, email, password }, context) => {
+  signup: async (parent, { firstName, lastName, email, password }, context) => {
     const hashedPassword = await hash(password, 10)
     const user = await context.prisma.createUser({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     })

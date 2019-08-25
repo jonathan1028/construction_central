@@ -56,12 +56,13 @@
   import gql from 'graphql-tag'
   // import { USER_ID, AUTH_TOKEN  } from '../constants'
   const SIGNUP_USER_MUTATION = gql `
-    mutation SignupUserMutation($email: String!, $password: String!, $name: String!) {
-      signup(email: $email, password: $password, name: $name) {
+    mutation SignupUserMutation($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+      signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
         token
         user{
           id
-          name
+          firstName
+          lastName
           email
         }
       }
@@ -72,7 +73,8 @@
     query AllUsersQuery {
       users {
         id
-        name
+        firstName
+        lastName
         email
       }
     }
@@ -86,7 +88,8 @@
         content
         author {
           id
-          name
+          firstName
+          lastName
         }
       }
     }
@@ -96,7 +99,8 @@
     data: () => ({
       email: '',
       password: '',
-      name: '',
+      firstName: '',
+      lastName: '',
       users: [],
       feed: []
     }),
@@ -105,12 +109,14 @@
       signUp() {
         const email = this.email
         const password = this.password
-        const name = this.name
+        const firstName = this.firstName
+        const lastName = this.lastName
         // Mutation
         this.$apollo.mutate({
           mutation: SIGNUP_USER_MUTATION,
           variables: {
-            name,
+            firstName,
+            lastName,
             email,
             password
           }
