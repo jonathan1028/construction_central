@@ -1,35 +1,24 @@
 <template>
-  <div class="userConsoleLayout">
+  <div class="layout">
     <div class="header">
-      <div class="header-content">
-          <div class="main-nav">
-            <!-- Logo -->
-            <div class="logo">Construction Central</div>
-            <div class="nav-buttons">
-              <router-link to="/feed">Feed</router-link>
-              <div>|</div>
-              <router-link to="/notifications">Notifications</router-link>
-              <div>|</div>
-              <router-link to="/profile">Profile</router-link>
-              <div>|</div>
-              <router-link to="/admin/dashboard">Admin</router-link>
-            </div>
-          </div>
-          <!-- Login buttons   -->
-          <div>
-            <div class="right-side-links">
-              <div
-                class="link"
-                @click="logout()">
-                  Log Out
-              </div>
-            </div>
-          </div>
+      <div class="logo">Construction Central</div>
+      <div
+        class="logout"
+        @click="logout()">
+        Log Out
       </div>
     </div>
-    <div class="main-content">
-      <router-view></router-view>
+    <div class="navigation">
+      <router-link class="navigation-link" to="/contacts">Contacts</router-link>
+      <router-link class="navigation-link" to="/leads">Leads</router-link>
+      <router-link class="navigation-link" to="/takeoffs">Takeoffs</router-link>
+      <router-link class="navigation-link" to="/estimating">Estimating</router-link>
+      <!-- <router-link class="navigation-link" to="/labor">Labor</router-link> -->
+      <router-link class="navigation-link" to="/projectmanagement">Project Mgmt</router-link>
+      <router-link class="navigation-link" to="/accounting">Accounting</router-link>
     </div>
+    <router-view class="content gradient"></router-view>
+    <div class="footer"></div>
   </div>
 </template>
 
@@ -51,78 +40,68 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.userConsoleLayout {
+.layout{
   display: grid;
-  grid-template-rows: 8vh auto;
+  grid-template-rows: 6vh 6vh 82vh 6vh;
+  grid-template-areas: 
+  "header"
+  "navigation"
+  "content"
+  "footer";
+  .header{
+    grid-area: header;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+    "logo logout";
+    padding: 1vh 1vw;
+    .logo{
+      grid-area: logo;
+      font-size: 4vh;
+      align-self: center;
+    }
+    .logout{
+      grid-area: logout;
+      justify-self: end;
+      align-self: center;
+      cursor: pointer;
+    }
+  }
+  .navigation{
+    grid-area: navigation;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-self: center;
+    padding: 0vh 1vw;
+    color: white;
+    background-color: var(--color3);
+    height: 100%;
+    align-content: center;
+    // align-self: center;
+    // align-items: center;
+    font-size: 2vh;
+    .navigation-link {
+      color: white;
+      font-size: 2vh;
+    }
+  }
+  .content{
+    // padding: 1vh 5vw;
+  }
+  .footer {
+    grid-area: footer;
+    background-color: var(--color3);
+  }
+  .gradient {
+    color: white;
+    background: -moz-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* ff3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(45,48,245,1)), color-stop(100%, rgba(35,150,153,1))); /* safari4+,chrome */
+    background: -webkit-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* safari5.1+,chrome10+ */
+    background: -o-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* opera 11.10+ */
+    background: -ms-linear-gradient(325deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* ie10+ */
+    background: linear-gradient(125deg, rgba(45,48,245,1) 0%, rgba(35,150,153,1) 100%); /* w3c */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2D30F5', endColorstr='#239699',GradientType=1 ); /* ie6-9 */
+  }
 }
-.main-content {
-  margin-top: 8vh;
-}
-.header{
-  // position: fixed;
-  width: 100%;
-  background: white;
-  // background: linear-gradient(0deg, rgba(245,245,249,1) 0%, rgba(255,255,255,1) 0%, rgba(255,204,0,1) 100%);
-  margin-bottom: 2vh;
-  // -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-  // -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(245, 245, 245, 0.1) inset;
-}
-.header-content{
-  max-width: 90%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo{
-  margin-right: 1em;
-}
-.main-nav{
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.nav-buttons{
-  display: flex;
-  justify-content:space-between;
-  align-items: center;
-  color: var(--theme-color3);
-  cursor: pointer;
-  text-decoration: none;
-}
-.nav-buttons a{
-  color: var(--theme-color3);
-  text-decoration: none;
-}
-.nav-buttons a:visited{
-  color: var(--theme-color3);
-  text-decoration: none;
-}
-.nav-buttons a:hover{
-  color: gray;
-  text-decoration: none;
-}
-.right-side-links{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.login a{
-   color: var(--theme-color3);
-   text-decoration: none;
-}
-.login a:visited{
-  color: var(--theme-color3);
-  text-decoration: none;
-}
-.login a:hover{
-  color: gray;
-}
-.link {
-  color: var(--theme-color3);
-  text-decoration: none;
-  cursor: pointer;
-}
+
 </style>

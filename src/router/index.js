@@ -10,6 +10,15 @@ import LoginLayout from '../components/public/LoginLayout'
 import LoginPage from '../components/public/LoginPage'
 import SignupPage from '../components/public/SignupPage'
 
+// Console Pages
+import ContactsPage from '../components/console/ContactsPage'
+import LeadsPage from '../components/console/LeadsPage'
+import TakeoffsPage from '../components/console/TakeoffsPage'
+import EstimatingPage from '../components/console/EstimatingPage'
+import ProjectManagementPage from '../components/console/ProjectManagementPage'
+import AccountingPage from '../components/console/AccountingPage'
+
+
 // import OrganizationSignUpPage from '../components/public/OrganizationSignUpPage'
 // import store from '../store/index'
 
@@ -102,6 +111,54 @@ const router = new Router({
           path: '/dashboard',
           name: 'Dashboard',
           component: DashboardPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/leads',
+          name: 'Leads',
+          component: LeadsPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/contacts',
+          name: 'Contacts',
+          component: ContactsPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/takeoffs',
+          name: 'Takeoffs',
+          component: TakeoffsPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/estimating',
+          name: 'Estimating',
+          component: EstimatingPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/projectmanagement',
+          name: 'ProjectManagement',
+          component: ProjectManagementPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/accounting',
+          name: 'Accounting',
+          component: AccountingPage,
           meta: {
             requiresAuth: true
           }
