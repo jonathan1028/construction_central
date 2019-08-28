@@ -1,7 +1,20 @@
 <template>
-  <div class="layout">
-    <h1>Takeoffs</h1>
-    <div>
+  <div class="page--layout">
+    <div class="title">
+      <h1>Takeoffs</h1>
+    </div>
+    <div class="buttons">
+      <router-link to="/takeoffs/create" class="__button-style1" tag="button">New Takeoff</router-link>
+    </div>
+    <div class="search">
+      <input
+        name="query"
+        v-model="takeoffsQuery"
+        placeholder="Search takeoffs..."
+      >
+    </div>
+    <div class="table">
+      <div>
         - Create/update takeoff page
         - Create takeoff table
         - Add new category to table
@@ -9,12 +22,7 @@
         - Create place for user to make new Items
         - Create place for user make new Categories
         - Create template
-    </div>
-    
-    <button>New Takeoff</button>
-    <div>
-        <p>Search bar</p>
-        <p>Display table of takeoffs here</p>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +32,7 @@ export default {
   name: 'Takeoffs',
   data () {
     return {
+      takeoffsQuery: ""
     }
   },
   methods: {
@@ -32,7 +41,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout {
- 
+.page--layout {
+  display: grid;
+  grid-template-areas:
+  "title"
+  "buttons"
+  "search"
+  "table";
+  grid-template-rows: 10% 5% 10% 70%;
+  padding: 2vh 5vw;
+  .title {
+    grid-area: title;
+  }
+  .buttons {
+    grid-area: buttons;
+  }
+  .search {
+    grid-area: search;
+    margin-top: 1vh;
+    input {
+      border: .25vh solid lightgray;
+      border-radius: 1vh;
+      padding-left: 0.5vw;
+    }
+  }
+  .table {
+    grid-area: table;
+  }
+  button {
+    width: max-content;
+    height: 100%;
+  }
 }
 </style>

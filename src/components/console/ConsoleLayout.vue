@@ -17,7 +17,7 @@
       <router-link class="navigation-link" to="/projectmanagement">Project Mgmt</router-link>
       <router-link class="navigation-link" to="/accounting">Accounting</router-link>
     </div>
-    <router-view class="content gradient"></router-view>
+    <router-view class="page-content"></router-view>
     <div class="footer"></div>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default {
   grid-template-areas: 
   "header"
   "navigation"
-  "content"
+  "page-content"
   "footer";
   .header{
     grid-area: header;
@@ -85,7 +85,8 @@ export default {
       font-size: 2vh;
     }
   }
-  .content{
+  .page-content{
+    grid-area: page-content;
     // padding: 1vh 5vw;
   }
   .footer {

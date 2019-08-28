@@ -18,6 +18,9 @@ import EstimatingPage from '../components/console/EstimatingPage'
 import ProjectManagementPage from '../components/console/ProjectManagementPage'
 import AccountingPage from '../components/console/AccountingPage'
 
+import TakeoffsCreate from '../components/console/TakeoffsCreate'
+import EstimateCreate from '../components/console/EstimateCreate'
+
 
 // import OrganizationSignUpPage from '../components/public/OrganizationSignUpPage'
 // import store from '../store/index'
@@ -140,9 +143,25 @@ const router = new Router({
           }
         },
         {
+          path: '/takeoffs/create',
+          name: 'TakeoffsCreate',
+          component: TakeoffsCreate,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
           path: '/estimating',
           name: 'Estimating',
           component: EstimatingPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/estimating/create',
+          name: 'EstimateCreate',
+          component: EstimateCreate,
           meta: {
             requiresAuth: true
           }
