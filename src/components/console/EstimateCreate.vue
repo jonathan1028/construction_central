@@ -1,13 +1,18 @@
 <template>
   <div class="page-layout">
     <div class="page-header">
-      <h1>{{project.name}} - {{estimate.name}}</h1>
+      <h1>{{project.name}} - {{estimate.name}} - {{myApolloTest}}</h1>
     </div>
     <div class="page-actions">
-      <router-link to="/estimating/create" class="__button-style1" tag="button">Add Item</router-link>
-      <router-link to="/estimating/create" class="__button-style1" tag="button">Add Category</router-link>
-      <router-link to="/estimating/create" class="__button-style1" tag="button">Save as Template</router-link>
-      <router-link to="/estimating/create" class="__button-style1" tag="button">Attach Takeoff</router-link>
+        <button 
+            class="__button-style1"
+            @click="openItemCreateModal">
+            Add Item
+        </button>
+        <!-- <router-link to="/estimating/create" class="__button-style1" tag="button">Add Item</router-link> -->
+        <router-link to="/estimating/create" class="__button-style1" tag="button">Add Category</router-link>
+        <router-link to="/estimating/create" class="__button-style1" tag="button">Save as Template</router-link>
+        <router-link to="/estimating/create" class="__button-style1" tag="button">Attach Takeoff</router-link>
     </div>
     <div class="page-content">
         <div 
@@ -87,6 +92,32 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
+
+// const GET_ITEM_CREATE_MODAL_STATE = gql`
+//   {
+//     itemCreateModalState @client
+//   }
+// `;
+
+export const TEST_QUERY = gql`
+  {
+    myApolloTest @client 
+  }
+`;
+
+// export const ITEM_CREATE_MODAL_STATE_QUERY = gql`
+//   {
+//     itemCreateModalState @client 
+//   }
+// `;
+
+// export const toggleItemCreateModal = gql`
+//   mutation() {
+//     toggleItemCreateModal() @client
+//   }
+// `;
+
 export default {
    name: 'Takeoffs',
     data () {
@@ -177,8 +208,22 @@ export default {
             categoryTotal += item.quantity * item.cost
         })
         return (categoryTotal).toFixed(2)
+    },
+    openItemCreateModal() {
+        console.log("Open item create modal",this.itemCreateModalState)
+        console.log(this.$apolloProvider)
+        // this.$apolloProvider.defaultClient.readQuery({})
+        this.itemCreateModalState = !this.itemCreateModalState
+        this.$apolloProvider.defaultClient.writeData({ data: { itemCreateModalState: this.itemCreateModalState } })
+        console.log("After mutation",this.itemCreateModalState)
+
     }
-  }
+  },
+  apollo: {
+    itemCreateModalState: {
+      query: gql`{itemCreateModalState @client}`
+    }
+  },
 }
 </script>
 

@@ -7,7 +7,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import router from './router'
 import { onError } from 'apollo-link-error'
 import { ApolloLink, concat, split } from 'apollo-link'
+import { typeDefs, resolvers } from './resolvers';
 
+// This errorLink item gives us detailed error messages from the server rather than the generic "server error" message
 const errorLink = onError(({ graphQLErrors }) => {
   if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message))
 })
@@ -23,15 +25,22 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
 })
 
-// End point for WSS: wss://eu1.prisma.sh/jonathan-75b87e/construction_central/dev
-
-// Cache implementation
+// This implementation
 const cache = new InMemoryCache()
+
+cache.writeData({
+  data: {
+    myApolloTest: 'Test, test, test',
+    itemCreateModalState: false
+  },
+});
 
 // Create the apollo client
 const apolloClient = new ApolloClient({
   link: ApolloLink.from([errorLink, httpLink]),
   cache,
+  typeDefs,
+  resolvers: {}
 })
 
 

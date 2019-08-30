@@ -17,14 +17,30 @@
       <router-link class="navigation-link" to="/projectmanagement">Project Mgmt</router-link>
       <router-link class="navigation-link" to="/accounting">Accounting</router-link>
     </div>
+      <!------------------------------------------       Modals ------------------------------------ -->
+      <div class="modal-area">
+        <!------------------------------------------ Create Medallion Modal ------------------------- -->
+          <span v-if="itemCreateModalState">
+            <item-create
+              class="create-medallion-component"
+            ></item-create>
+          </span>
+
+      </div>
+      <!------------------------------------------ End of Modal Content  ---------------------------- -->
     <router-view class="page-content"></router-view>
     <div class="footer"></div>
   </div>
 </template>
 
 <script>
+import gql from "graphql-tag";
+import ItemCreate from "./modals/ItemCreate"
 export default {
   name: 'ConsoleLayout',
+  components: {
+    ItemCreate
+  },
   data () {
     return {
     }
@@ -35,7 +51,12 @@ export default {
       localStorage.token = ''
       this.$router.push({ path: 'login' })
     }
-  }
+  },
+  apollo: {
+    itemCreateModalState: {
+      query: gql`{itemCreateModalState @client}`
+    }
+  },
 }
 </script>
 
