@@ -1,63 +1,85 @@
 <template>
-  <div class="page--layout">
-    <div class="title">
-      <h1>Create Takeoff</h1>
+  <div class="page-layout">
+    <div class="page-header">
+      <h1>{{project.name}} - {{estimate.name}}</h1>
     </div>
-    <!-- <div class="buttons">
-      <router-link to="/takeoffs/create" class="__button-style1" tag="button">New Takeoff</router-link>
-    </div> -->
-    <!-- <div class="search">
-      <input
-        name="query"
-        v-model="takeoffsQuery"
-        placeholder="Search takeoffs..."
-      >
-    </div> -->
-    <div>
-        <div>{{project.name}}</div>
-
-        
+    <div class="page-actions">
+      <router-link to="/estimating/create" class="__button-style1" tag="button">Add Item</router-link>
+      <router-link to="/estimating/create" class="__button-style1" tag="button">Add Category</router-link>
+      <router-link to="/estimating/create" class="__button-style1" tag="button">Save as Template</router-link>
+      <router-link to="/estimating/create" class="__button-style1" tag="button">Attach Takeoff</router-link>
+    </div>
+    <div class="page-content">
         <div 
-            class="categories" 
-            v-for="(takeoff,index) in project.takeoffs">
-            <div>{{takeoff.name}}</div>
-            <div class="table--header">
-                <div class="title left-align">Item</div>
-                <div class="title">Count</div>
+            class="table" 
+            v-for="(category,index) in estimate.categories">
+            <!-- <div>{{category.name}}</div> -->
+            <div class="table-header">
+                <div class="title left-align">{{category.name}}</div>
+                <div class="title">Qty</div>
                 <div class="title">Unit</div>
-                <div class="title">Multiplier</div>
-                <div class="title">Waste</div>
-                <div class="title">Quantity</div>
+                <div class="title">Cost</div>
+                <div class="title">Total</div>
+                <!-- <div class="title">Quantity</div> -->
             </div>
-            <div 
-                class="items"
-                v-for="(item,index) in takeoff.items">
-                <div class="item2 left-align">{{item.name}}</div>
-                <div class="item2">
-                    <!-- </input>{{item.count}}</div> -->
+            <div
+                v-if="!item.takeoff"
+                class="row"
+                v-for="(item,index) in category.items">
+                <div class="cell left-align">{{item.name}}</div>
+                <div class="cell">
                     <input
                         name="query"
-                        v-model="item.count"
-                        placeholder="Search takeoffs..."
+                        v-model="item.quantity"
                     >
                 </div>
-                <div class="item2">{{item.unit}}</div>
-                <div class="item2">
+                <div
+                    class="cell">
                     <input
                         name="query"
-                        v-model="item.multiplier"
-                        placeholder="Search takeoffs..."
+                        v-model="item.unit"
                     >
                 </div>
-                <div class="item2">
+                <div class="cell">
                     <input
                         name="query"
-                        v-model="item.waste"
-                        placeholder="Search takeoffs..."
+                        v-model="item.cost"
                     >
                 </div>
-                <div class="item2">{{calculateQuantity(item.count, item.multiplier, item.waste)}}</div>
-                <!-- <div class="item2">55</div> -->
+                <div class="cell">{{calculateItemTotal(item.quantity, item.cost)}}</div>
+            </div>
+            <div
+                v-if="item.takeoff"
+                class="row"
+                v-for="(item,index) in category.items">
+                <div class="cell left-align">{{item.name}}</div>
+                <div class="cell">
+                    <!-- <input
+                        name="query"
+                        v-model="item.quantity"
+                    > -->
+                </div>
+                <div
+                    class="cell">
+                    <!-- <input
+                        name="query"
+                        v-model="item.unit"
+                    > -->
+                    <button class="__button-style1">{{item.unit}}</button>
+
+                    
+                </div>
+                <div class="cell">
+                    <!-- <input
+                        name="query"
+                        v-model="item.cost"
+                    > -->
+                </div>
+                <div class="cell">{{calculateItemTotal(item.quantity, item.cost)}}</div>
+            </div>
+            <div class="last-row">
+                <div class="cell left-align">Subtotal</div>
+                <div class="cell amount">{{calculateCategoryTotal(category)}}</div>
             </div>
         </div>
     </div>
@@ -71,42 +93,61 @@ export default {
         return {
             takeoffsQuery: "",
             project: {
-                name: "My 1st Project",
-                takeoffs: [
+                name: "1234 Main Street"
+            },
+            estimate: {
+                name: "Estimate 1",
+                categories: [
+                     {
+                        name: "Foundation",  
+                        items: [
+                            {
+                                name: 'Foundation labor',
+                                quantity: 5,
+                                unit: "LF",
+                                cost: 1.25
+                            },
+                            {
+                                name: "Foundation materials",
+                                quantity: 3,
+                                unit: "SF",
+                                cost: 12 
+                            },
+                        ]
+                    },
                     {
-                        name: "Framing Takeoff",  
+                        name: "Framing",  
                         items: [
                             {
                                 name: '2"x4"x8 stud',
-                                count: 5,
+                                quantity: 5,
                                 unit: "LF",
-                                multiplier: 0.75,
-                                waste: 0.2,
-                                quantity: null 
+                                cost: 2.98
                             },
                             {
                                 name: "OSB Sheathing",
-                                count: 3,
+                                quantity: 3,
                                 unit: "SF",
-                                multiplier: 0.75,
-                                waste: 0.2,
-                                quantity: null  
+                                cost: 14.01 
                             },
                             {
                                 name: "Zip Tape",
-                                count: 22,
+                                quantity: 22,
                                 unit: "SF",
-                                multiplier: 0.75,
-                                waste: 0.2,
-                                quantity: null  
+                                cost: 30.24  
                             },
                             {
                                 name: '2"x10x10 pine',
-                                count: 7,
+                                quantity: 7,
                                 unit: "LF",
-                                multiplier: 0.75,
-                                waste: 0.2,
-                                quantity: null 
+                                cost: 11.98 
+                            },
+                            {
+                                name: 'Framing materials',
+                                quantity: null,
+                                unit: "Takeoff",
+                                cost: null,
+                                takeoff: true
                             }
                         ]
                     }
@@ -127,60 +168,118 @@ export default {
 //     }
 //   },
   methods: {
-    calculateQuantity(count, multiplier, waste) {
-        return Math.round(count * multiplier * waste)
+    calculateItemTotal(quantity, cost) {
+        return (quantity * cost).toFixed(2)
+    },
+    calculateCategoryTotal(category) {
+        var categoryTotal = 0
+        category.items.forEach(function(item){
+            categoryTotal += item.quantity * item.cost
+        })
+        return (categoryTotal).toFixed(2)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.page--layout {
+.page-layout {
     display: grid;
     grid-template-areas:
-    "title"
-    "buttons"
-    "search"
-    "table";
-    grid-template-rows: 10% 5% 10% 70%;
+    "page-header"
+    "page-actions"
+    "page-content";
+    grid-template-rows: 5vh 5vh 70vh;
     padding: 2vh 5vw;
-    .table--header {
-        margin-left: 2vw;
-        display: grid;
-        grid-template-columns: 25% 10% 10% 10% 20% 25%;
-        .title {
-            //   border: 1px solid black;
-            text-align: right;
-            font-weight: 900;
-           
-        }
-         .left-align {
-            text-align: left;
+    .page-header {
+        grid-area: page-header;
+        text-align: center;
+    }
+    .page-actions {
+        grid-area: page-actions;
+        margin-top: 1vh;
+        button {
+            width: max-content;
+            height: 100%;
+            margin-right: 1vw;
         }
     }
-    .categories {
-        margin-left: 2vw;
+    .page-content {
+        grid-area: page-content;
+        margin-top: 1vh;
     }
-    .items {
-        margin-left: 2vw;
-        display: grid;
-        grid-template-columns: 25% 10% 10% 10% 20% 25%;
-        .item2 {
-            border: 1px solid black;
-            text-align: right;
-            width: 100%;
-            input {
-                //  justify-content: end;
-                width: 100%;
+    .table {
+        font-size: 1.5vmax;
+        input {
+            font-size: 1.5vmax;
+        }
+        .table-header {
+            display: grid;
+            grid-template-columns: 22vw 10vw 10vw 10vw 10vw;
+            background-color: lightblue;
+            .title {
                 text-align: right;
-                //  background-color: yellow; 
-                border: none;
+                font-weight: 900;
+            }
+            .left-align {
+                text-align: left;
             }
         }
-        .left-align {
-            text-align: left;
+        .row {
+            margin-left: 2vw;
+            display: grid;
+            grid-template-columns: 20vw 10vw 10vw 10vw 10vw;
+            border: none;
+            border-bottom: 2px solid black;
+            
+            .cell {
+                text-align: right;
+                width: 100%;
+                padding-right: 1vw;
+                input {
+                    width: 100%;
+                    text-align: right;
+                    // padding: 0vh 1vw;
+                    border: none;
+                    // background-color: lightgray;
+                }
+              
+            }
+            .left-align {
+                text-align: left;
+            }
+        }
+        .takeoff-row {
+            background-color: yellow;
+            color: green;
+            border-bottom: 5px solid red;
+        }
+        .row:nth-child(even) {
+            // background-color: #f2f2f2;
+        }
+        .last-row {
+            display: grid;
+            grid-template-columns: 50vw 10vw;
+            margin-left: 2vw;
+            margin-bottom: 1vh;
+            font-weight: 900;
+            .cell {
+                text-align: right;
+                width: 100%;
+                padding-right: 1vw;
+                // input {
+                //     width: 100%;
+                //     text-align: right;
+                //     border: none;
+                // }
+            }
+            .left-align {
+                text-align: left;
+            }
         }
     }
+    
+
     
 }
 </style>
