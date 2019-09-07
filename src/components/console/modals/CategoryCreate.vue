@@ -1,17 +1,18 @@
 <template>
   <div class="modal _box-shadow1">
     <div class="modal-header">
+      <!-- <h2>New Category</h2> -->
     </div>
     <div class="modal-body">
-      <div class="modal-field-label">Add Item</div>
-      <select 
-          class="modal-field-select"
-          v-model="selected">
-          <!-- <option v-for="category in categories" v-bind:value="category.value"> -->
-          <option v-for="item in items">
-          {{ item.name }}
-          </option>
-      </select>
+        <div class="modal-field-label">Add Category</div>
+        <select 
+            class="modal-field-select"
+            v-model="selected">
+            <!-- <option v-for="category in categories" v-bind:value="category.value"> -->
+            <option v-for="category in categories">
+            {{ category }}
+            </option>
+        </select>
     </div>
     <div class="modal-footer">
       <button 
@@ -37,45 +38,14 @@ export default {
       name: "",
       unit: "",
       cost: "",
-      items: [
-        {
-            name: '2"x4"x8 stud',
-            quantity: 5,
-            unit: "LF",
-            cost: 2.98
-        },
-        {
-            name: "OSB Sheathing",
-            quantity: 3,
-            unit: "SF",
-            cost: 14.01 
-        },
-        {
-            name: "Zip Tape",
-            quantity: 22,
-            unit: "SF",
-            cost: 30.24  
-        },
-        {
-            name: '2"x10x10 pine',
-            quantity: 7,
-            unit: "LF",
-            cost: 11.98 
-        },
-        {
-            name: 'Framing materials',
-            quantity: null,
-            unit: "Takeoff",
-            cost: null,
-            takeoff: true
-        }
-      ]
+      selected: "",
+      categories: ["Foundation","Framing","Wallboard"]
     }
   },
   methods: {
     cancel () {
       // this.$store.commit('toggleCreateMedallionModal')
-      this.$apolloProvider.defaultClient.writeData({ data: { itemCreateModalState: !this.itemCreateModalState } })
+      this.$apolloProvider.defaultClient.writeData({ data: { categoryCreateModalState: !this.categoryCreateModalState } })
     },
     submit () {
       console.log('Modal Items', this.qty, this.email, this.currentUserId)
@@ -109,8 +79,8 @@ export default {
     }
   },
   apollo: {
-    itemCreateModalState: {
-      query: gql`{itemCreateModalState @client}`
+    categoryCreateModalState: {
+      query: gql`{categoryCreateModalState @client}`
     }
   },
 }
@@ -125,4 +95,5 @@ export default {
     font-size: 2vmax;
     margin-right: 1vw;
 }
+
 </style>

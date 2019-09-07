@@ -31,7 +31,8 @@ const cache = new InMemoryCache()
 cache.writeData({
   data: {
     myApolloTest: 'Test, test, test',
-    itemCreateModalState: false
+    itemCreateModalState: false,
+    categoryCreateModalState: false
   },
 });
 

@@ -20,10 +20,15 @@
       <!------------------------------------------       Modals ------------------------------------ -->
       <div class="modal-area">
         <!------------------------------------------ Create Medallion Modal ------------------------- -->
-          <span v-if="itemCreateModalState">
+          <!-- <span v-if="itemCreateModalState">
             <item-create
               class="create-medallion-component"
             ></item-create>
+          </span> -->
+          <span v-if="itemCreateModalState || categoryCreateModalState">
+            <base-modal
+              class="create-medallion-component"
+            ></base-modal>
           </span>
 
       </div>
@@ -36,10 +41,12 @@
 <script>
 import gql from "graphql-tag";
 import ItemCreate from "./modals/ItemCreate"
+import CategoryCreate from "./modals/CategoryCreate"
+import BaseModal from "./modals/BaseModal"
 export default {
   name: 'ConsoleLayout',
   components: {
-    ItemCreate
+    ItemCreate, CategoryCreate, BaseModal
   },
   data () {
     return {
@@ -55,6 +62,9 @@ export default {
   apollo: {
     itemCreateModalState: {
       query: gql`{itemCreateModalState @client}`
+    },
+    categoryCreateModalState: {
+      query: gql`{categoryCreateModalState @client}`
     }
   },
 }
